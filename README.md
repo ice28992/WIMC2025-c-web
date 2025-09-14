@@ -1,4 +1,6 @@
 # WIMC2025-c-web
+Web × IoT メイカーズチャレンジPLUS 2025 信州CチームのWeb実装
+
 ## frontend：フロントエンド
 メインフレームワーク：Next.js
 
