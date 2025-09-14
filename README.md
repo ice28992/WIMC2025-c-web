@@ -1,6 +1,7 @@
 # WIMC2025-c-web
 ## frontend：フロントエンド
 メインフレームワーク：Next.js
+
 CSSフレームワーク：Material UI
 
 ### 機能
