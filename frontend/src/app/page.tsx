@@ -28,6 +28,7 @@ export default function HomePage() {
       {/* <RecentRecordCard /> */}
       <Header />
       <Typography>はろー</Typography>
+      <div id="detection"></div>
       {/* メーターを囲む枠 */}
       <Box
         sx={{
