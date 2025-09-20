@@ -1,10 +1,14 @@
+"use client";
+
+import { Stack, Typography, Box } from "@mui/material";
+import { useState } from "react";
 import { Stack, Typography, Box } from "@mui/material";
 import { Zen_Maru_Gothic } from "next/font/google";
 import Header from "@/components/ui/header";
 import DangerMeter from "@/components/ui/dangerMeter";
 import LilyBackground from "@/components/ui/lilyBackground";
 import Footer from "@/components/ui/footer";
-
+import WordList from "@/components/ui/list";
 
 const zen = Zen_Maru_Gothic({
   weight: ["400"],
@@ -14,6 +18,17 @@ const zen = Zen_Maru_Gothic({
 
 // ホーム
 export default function HomePage() {
+  const [words, setWords] = useState<{ word: string; count: number }[]>([
+    { word: "こんにちは", count: 3 },
+    { word: "ありがとう", count: 1 },
+  ]);
+
+  // サンプルで単語を追加する関数
+  const addWord = () => {
+    const newWord = `単語${words.length + 1}`;
+    setWords((prev) => [...prev, { word: newWord, count: Math.floor(Math.random() * 5) + 1 }]);
+  };
+
   return (
     <Stack
       className={zen.className}
@@ -24,11 +39,46 @@ export default function HomePage() {
         overflow: "hidden",
       }}
     >
+      <LilyBackground />
+      {/* <RecentRecordCard /> */}
+      <Header />
+      <Typography>はろー</Typography>
+
+      {/* 音声認識結果表示エリア */}
+      <div
+        id="detection"
+        style={{
+          maxWidth: 340,
+          margin: "16px auto",
+          padding: "12px",
+          backgroundColor: "#fff",
+          borderRadius: "8px",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+          position: "relative",
+        }}
+      >
+        <span
+          style={{
+            content: '""',
+            position: "absolute",
+            bottom: "-10px",  // 下向きの三角
+            left: "20px",
+            width: 0,
+            height: 0,
+            borderLeft: "10px solid transparent",
+            borderRight: "10px solid transparent",
+            borderTop: "10px solid #fff",
+          }}
+        />
+        ここに音声認識の結果やテキストを表示
+      </div>
+
       <LilyBackground /> 
       {/* <RecentRecordCard /> */}
       <Header />
       <Typography>はろー</Typography>
       <div id="detection"></div>
+
       {/* メーターを囲む枠 */}
       <Box
         sx={{
@@ -65,6 +115,7 @@ export default function HomePage() {
           ワード検出状況
         </Box>
         {/* メーター */}
+        <DangerMeter level={1} />
         <DangerMeter level={7} />
       </Box>
       {/* 確認ボタン */}
@@ -85,6 +136,13 @@ export default function HomePage() {
           確認
         </button>
       </Box>
+      
+      {/* 単語リスト */}
+      <WordList
+        words={[...words].sort((a, b) => b.count - a.count)}
+      />
+      <Footer />
+    </Stack>
       <Footer />
     </Stack>
   );
