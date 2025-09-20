@@ -3,23 +3,26 @@ import { Box, Typography } from "@mui/material";
 
 export default function Footer() {
   return (
+    <Box sx={{ width: "100%" }}>
     <Box
+      component="footer"
       sx={{
-        width: "100%",
-        height: "60px",
-        bgcolor: "#FFC107",
+        position: "fixed",    // 画面下に固定
+        bottom: 0,
+        // left: 0,
+        width: "57.3%",        // 横幅いっぱい
+        height: 60,           // 高さ固定
+        bgcolor: "#FFC107",   // 背景色
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        position: "fixed",
-        left: 0,
-        bottom: 0,
         zIndex: 10,
       }}
     >
       <Typography variant="body2" color="black">
         フッター
       </Typography>
+    </Box>
     </Box>
   );
 }
