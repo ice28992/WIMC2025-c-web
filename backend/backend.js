@@ -1,7 +1,39 @@
 import net from "net";
 import WebSocket, { WebSocketServer } from "ws";
+import { requestGPIOAccess } from "node-web-gpio";
+const sleep = (msec) => new Promise((resolve) => setTimeout(resolve, msec)); 
 
-// TCPサーバー設定
+//---------------------------------------------------------
+// LED点滅関係
+//---------------------------------------------------------
+async function ledBlink() {
+  const gpioAccess = await requestGPIOAccess(); // GPIO を操作する
+  // ポートを取得する
+  const port1 = gpioAccess.ports.get(26); // 1つ目のLED用のポート (26番)
+  const port2 = gpioAccess.ports.get(19); // 2つ目のLED用のポート (19番)
+  // 両方のポートを出力モードに設定する
+  await Promise.all([
+    port1.export("out"),
+    port2.export("out")
+  ]);
+
+  for (let i=0; i<=10; i++) {
+    await Promise.all([
+      port1.write(1), // LED1を点灯
+      port2.write(1)  // LED2を点灯
+    ]);
+    await sleep(100); // 200 ms (0.2秒) 待機
+    await Promise.all([
+      port1.write(0), // LED1を消灯
+      port2.write(0)  // LED2を消灯
+    ]);
+    await sleep(100); // 200 ms (0.2秒) 待機
+  }
+}
+
+//---------------------------------------------------------
+// サーバー設定
+//---------------------------------------------------------
 const TCP_PORT = 12345;
 const TCP_HOST = "0.0.0.0";
 
@@ -17,6 +49,7 @@ const server = net.createServer((socket) => {
 
   // データ受信
   socket.on("data", (data) => {
+    ledBlink();
     const message = data.toString().trim();
 
     // 例: "ID: 1, Text: おかね"
