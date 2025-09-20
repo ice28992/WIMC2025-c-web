@@ -1,33 +1,60 @@
-// export const runtime = "nodejs";
-const WebSocket = require('ws');
+import net from "net";
+import WebSocket, { WebSocketServer } from "ws";
 
-console.log(process.release);
-// 接続先のアドレスとポート
-const host = '192.168.91.51';
-const port = 1891;
-// const url = `ws://${host}:${port}`;
-const url = "ws://192.168.91.51:1891"
+// TCPサーバー設定
+const TCP_PORT = 12345;
+const TCP_HOST = "0.0.0.0";
 
-// WebSocketオブジェクトを作成
-const ws = new WebSocket(url);
+// WebSocketサーバー設定
+const WS_PORT = 1891;
 
-// 接続が成功したときに実行されるイベントハンドラ
-ws.onopen = () => {
-    console.log('WebSocket接続が成功しました');
-    console.log(`接続先: ${url}`);
-};
+// WebSocketサーバーインスタンスを作成
+const wss = new WebSocketServer({ port: WS_PORT });
 
-// メッセージを受信したときに実行されるイベントハンドラ
-ws.onmessage = (event) => {
-    console.log(`サーバーからメッセージを受信: ${event.data}`);
-};
+// TCPサーバーインスタンスを作成
+const server = net.createServer((socket) => {
+  console.log("Client connected:", socket.remoteAddress, socket.remotePort);
 
-// 接続が切断されたときに実行されるイベントハンドラ
-ws.onclose = () => {
-    console.log('WebSocket接続が切断されました');
-};
+  // データ受信
+  socket.on("data", (data) => {
+    const message = data.toString().trim();
 
-// エラーが発生したときに実行されるイベントハンドラ
-ws.onerror = (error) => {
-    console.error('WebSocketエラー:', error);
-};
+    // 例: "ID: 1, Text: おかね"
+    const match = message.match(/ID:\s*(\d+),\s*Text:\s*(.+)/);
+    if (match) {
+      const id = parseInt(match[1], 10);
+      const text = match[2];
+      console.log(`Received Data: id=${id}, text=${text}`);
+
+      // WebSocket接続がある場合、すべてのクライアントにメッセージを送信
+      wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          // メッセージ送信
+          client.send(JSON.stringify({ id, text }));
+        }
+      });
+    } else {
+      // 未受信の場合
+      console.log("Invalid:", message);
+    }
+  });
+
+  socket.on("close", () => {
+    console.log("Client disconnected:", socket.remoteAddress, socket.remotePort);
+  });
+});
+
+// WebSocketサーバー接続時の処理
+wss.on('connection', (ws) => {
+  console.log('WebSocket client connected');
+
+  ws.on('message', (message) => { console.log('Message from client:', message); });
+  ws.on('close', () => { console.log('WebSocket client disconnected'); });
+});
+
+wss.on('listening', () => { console.log(`WebSocket server is listening on ws://localhost:${WS_PORT}`); });
+
+// TCPサーバーを起動
+server.listen(TCP_PORT, TCP_HOST, () => {
+  console.log(`TCP server listening on tcp://${TCP_HOST}:${TCP_PORT}`);
+});
