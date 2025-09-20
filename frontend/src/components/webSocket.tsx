@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { Box } from "@mui/material";
+import Image from 'next/image';
 
 interface Props {
   setWords: React.Dispatch<React.SetStateAction<{ word: string; count: number }[]>>;
@@ -48,9 +50,14 @@ const GetWebSocketData = ({ setWords }: Props) => {
   return (
     // messageが空の時は非表示
     message ? (
-      <><div
+      <Box sx={{ display: 'flex', alignItems: 'center', height: '100px' }}>
+      <Box sx={{ position: 'relative', left: "10px", mt: "20px", height: '100px', }}>
+        <Image src="/sakana.png" alt="説明" width={80} height={80} />
+      </Box>
+      {/* メッセージ */}
+      <div
         style={{
-          maxWidth: 340,
+          maxWidth: "70%",
           margin: "16px auto",
           padding: "12px",
           backgroundColor: "#28A745",
@@ -59,23 +66,26 @@ const GetWebSocketData = ({ setWords }: Props) => {
           borderRadius: "8px",
           boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
           position: "relative",
+          marginLeft: "20px",  // 画像とメッセージの間にスペースを空ける
         }}
       >
         <span
           style={{
             content: '""',
             position: "absolute",
-            bottom: "-10px", // 下向きの三角
-            left: "20px",
+            bottom: "20px",
+            left: "-10px",
             width: 0,
             height: 0,
             borderLeft: "10px solid transparent",
             borderRight: "10px solid transparent",
             borderTop: "10px solid #28A745",
-          }} />
+          }}
+        />
         {"詐欺ワード『" + message + "』を検知しました！" || "受信待ち..."}
       </div>
-      </>
+    </Box>
+
     ) : null
   );
 };
