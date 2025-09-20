@@ -1,26 +1,33 @@
-import net from "net";
+// export const runtime = "nodejs";
+const WebSocket = require('ws');
 
-// PORTとHOST設定
-const PORT = 12345;
-const HOST = "0.0.0.0";
+console.log(process.release);
+// 接続先のアドレスとポート
+const host = '192.168.91.51';
+const port = 1891;
+// const url = `ws://${host}:${port}`;
+const url = "ws://192.168.91.51:1891"
 
-// サーバ生成
-const server = net.createServer((socket) => {
-  console.log("Client connected:", socket.remoteAddress, socket.remotePort);
+// WebSocketオブジェクトを作成
+const ws = new WebSocket(url);
 
-  // データ受信
-  socket.on("data", (data) => {
-    const message = data.toString().trim();
+// 接続が成功したときに実行されるイベントハンドラ
+ws.onopen = () => {
+    console.log('WebSocket接続が成功しました');
+    console.log(`接続先: ${url}`);
+};
 
-    // 例: "ID: 1, Text: money"
-    const match = message.match(/ID:\s*(\d+),\s*Text:\s*(.+)/);
-    if (match) {
-      const id = parseInt(match[1], 10);
-      const text = match[2];
-      console.log(`Received Data: id=${id}, text=${text}`);
-    }
-  });
-});
+// メッセージを受信したときに実行されるイベントハンドラ
+ws.onmessage = (event) => {
+    console.log(`サーバーからメッセージを受信: ${event.data}`);
+};
 
-// サーバ開始
-server.listen(PORT, HOST, () => { console.log("Server listening"); });
+// 接続が切断されたときに実行されるイベントハンドラ
+ws.onclose = () => {
+    console.log('WebSocket接続が切断されました');
+};
+
+// エラーが発生したときに実行されるイベントハンドラ
+ws.onerror = (error) => {
+    console.error('WebSocketエラー:', error);
+};
