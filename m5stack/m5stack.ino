@@ -7,11 +7,11 @@ ASRUnit asr;
 //---------------------------------------
 // WiFi設定
 //---------------------------------------
-const char* ssid = "****";
-const char* password = "****";
+const char* ssid = "***";
+const char* password = "***";
 
 // chirimenのIPとポート
-const char* host = "****";
+const char* host = "***";
 const uint16_t port = 12345;
 
 void sendServer(int id, const String& text) {
@@ -47,14 +47,13 @@ void setup() {
   Serial.println("\nWiFi connected");
 
   // コマンド認識とID付与
-  asr.addCommandWord(1, "money");
-  asr.addCommandWord(2, "transfer");
-  asr.addCommandWord(3, "account");
-  asr.addCommandWord(4, "refund");
-  asr.addCommandWord(5, "cash");
-  asr.addCommandWord(6, "personal info");
-  asr.addCommandWord(7, "credit card");
-  asr.addCommandWord(8, "okane");
+  asr.addCommandWord(2, "お金");
+  asr.addCommandWord(3, "口座");
+  asr.addCommandWord(4, "振り込み");
+  asr.addCommandWord(5, "還付金");
+  asr.addCommandWord(6, "現金");
+  asr.addCommandWord(7, "個人情報");
+  asr.addCommandWord(8, "クレジットカード");
 }
 
 //---------------------------------------
