@@ -8,7 +8,7 @@ export default function Footer() {
       sx={{
         position: "fixed",    // 画面下に固定
         bottom: 0,
-        width: "54.7%",       // 横幅いっぱいに修正
+        width: "53.7%",       // 横幅いっぱいに修正
         height: 60,           // 高さ固定
         background: "linear-gradient(90deg, #FFC107 0%, #FFF176 100%)",
         display: "flex",

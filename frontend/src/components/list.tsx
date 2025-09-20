@@ -1,5 +1,6 @@
 "use client";
 
+import { BorderAll } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 
 type WordListProps = {
@@ -40,13 +41,27 @@ export default function WordList({ words }: WordListProps) {
 
       {/* リスト部分 */}
       <Box sx={{ p: 2 }}>
+        <Typography 
+          sx={{ 
+            mr: "25%", 
+            pb: 1, 
+            fontSize: "15px",
+            textAlign: "right" 
+          }}>
+            検出ワード：検出回数
+          </Typography>
+        <hr />
         {words.map((item, index) => (
           <Typography
             key={index}
             variant="body2"
-            sx={{ mb: 0.5 }}
+            sx={{ 
+              mr: "40%", 
+              fontSize: "15px",
+              textAlign: "right" 
+            }}
           >
-            {item.word}：{item.count}
+            {item.word}：{item.count + "回"}
           </Typography>
         ))}
       </Box>

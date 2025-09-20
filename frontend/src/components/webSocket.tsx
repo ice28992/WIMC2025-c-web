@@ -20,12 +20,13 @@ const GetWebSocketData = ({ setWords }: Props) => {
       // 受信テキスト表示
       if (data && data.text) {
         setMessage(data.text);
+
         // 受信単語のカウント
         setWords((listDatas) => {
           // 既出の単語か判別
-          const existingItem = listDatas.find(item => item.word === data.text);
-          if (existingItem) {
-            return listDatas.map(item => item.word === data.text ? { ...item, count: item.count + 1 } : item);
+          const existItem = listDatas.find(item => item.word == data.text);
+          if (existItem) {
+            return listDatas.map(item => item.word == data.text ? { ...item, count: item.count + 1 } : item);
           } else {
             // 新しい単語をリストに追加
             return [...listDatas, { word: data.text, count: 1 }];

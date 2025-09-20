@@ -1,16 +1,16 @@
 "use client";
 
 import { Stack, Typography, Box } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { Zen_Maru_Gothic } from "next/font/google";
 
 import Header from "@/components/ui/header";
 import Footer from "@/components/ui/footer";
+import LilyBackground from "@/components/ui/lilyBackground";
 
 import GetWebSocketData from "@/components/webSocket";
-import DangerMeter from "@/components/ui/dangerMeter";
-import LilyBackground from "@/components/ui/lilyBackground";
-import WordList from "@/components/ui/list";
+import DangerMeter from "@/components/dangerMeter";
+import WordList from "@/components/list";
 
 const zen = Zen_Maru_Gothic({
   weight: ["400"],
@@ -19,10 +19,7 @@ const zen = Zen_Maru_Gothic({
 });
 
 export default function HomePage() {
-  const [words, setWords] = useState<{ word: string; count: number }[]>([
-    { word: "こんにちは", count: 3 },
-    { word: "ありがとう", count: 1 },
-  ]);
+  const [words, setWords] = useState<{ word: string; count: number }[]>([]);
   
   return (
     <Stack
@@ -36,7 +33,7 @@ export default function HomePage() {
     >
       <LilyBackground />
       <Header />
-      <GetWebSocketData />
+      <GetWebSocketData setWords={ setWords } />
 
       {/* メーターを囲む枠 */}
       <Box
@@ -79,7 +76,7 @@ export default function HomePage() {
       </Box>
 
       {/* 単語リスト */}
-      <WordList words={[...words].sort((a, b) => b.count - a.count)} />
+      <WordList words={words} />
 
       <Footer />
     </Stack>
