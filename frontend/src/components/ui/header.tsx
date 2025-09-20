@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState("ヘッダー");
+  const [title, setTitle] = useState("");
 
   const handleToggle = () => setOpen(!open);
 
