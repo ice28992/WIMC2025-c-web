@@ -2,7 +2,6 @@
 
 import { Stack, Typography, Box } from "@mui/material";
 import { useState } from "react";
-import { Stack, Typography, Box } from "@mui/material";
 import { Zen_Maru_Gothic } from "next/font/google";
 import Header from "@/components/ui/header";
 import DangerMeter from "@/components/ui/dangerMeter";
@@ -40,10 +39,9 @@ export default function HomePage() {
       }}
     >
       <LilyBackground />
+
       {/* <RecentRecordCard /> */}
       <Header />
-      <Typography>はろー</Typography>
-
       {/* 音声認識結果表示エリア */}
       <div
         id="detection"
@@ -61,7 +59,7 @@ export default function HomePage() {
           style={{
             content: '""',
             position: "absolute",
-            bottom: "-10px",  // 下向きの三角
+            bottom: "-10px", // 下向きの三角
             left: "20px",
             width: 0,
             height: 0,
@@ -72,12 +70,6 @@ export default function HomePage() {
         />
         ここに音声認識の結果やテキストを表示
       </div>
-
-      <LilyBackground /> 
-      {/* <RecentRecordCard /> */}
-      <Header />
-      <Typography>はろー</Typography>
-      <div id="detection"></div>
 
       {/* メーターを囲む枠 */}
       <Box
@@ -115,11 +107,21 @@ export default function HomePage() {
           ワード検出状況
         </Box>
         {/* メーター */}
-        <DangerMeter level={1} />
-        <DangerMeter level={7} />
+        <DangerMeter level={3} />
       </Box>
+
       {/* 確認ボタン */}
-      <Box sx={{ width: "100%", maxWidth: 340, mx: "auto", mb: 2, textAlign: "center", zIndex: 1, position: "relative" }}>
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 340,
+          mx: "auto",
+          mb: 2,
+          textAlign: "center",
+          zIndex: 1,
+          position: "relative",
+        }}
+      >
         <button
           style={{
             background: "#28A745",
@@ -132,17 +134,15 @@ export default function HomePage() {
             cursor: "pointer",
             boxShadow: "0 2px 8px rgba(40,167,69,0.15)",
           }}
+          onClick={addWord}
         >
           確認
         </button>
       </Box>
-      
+
       {/* 単語リスト */}
-      <WordList
-        words={[...words].sort((a, b) => b.count - a.count)}
-      />
-      <Footer />
-    </Stack>
+      <WordList words={[...words].sort((a, b) => b.count - a.count)} />
+
       <Footer />
     </Stack>
   );
