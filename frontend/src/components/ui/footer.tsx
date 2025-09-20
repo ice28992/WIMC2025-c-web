@@ -16,6 +16,17 @@ export default function Footer() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+    <Box
+      sx={{
+        width: "100%",
+        height: "60px",
+        bgcolor: "#FFC107",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "fixed",
+        left: 0,
+        bottom: 0,
         zIndex: 10,
       }}
     >

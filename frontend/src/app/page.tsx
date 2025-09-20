@@ -2,14 +2,13 @@
 
 import { Stack, Typography, Box } from "@mui/material";
 import { useState } from "react";
+import { Stack, Typography, Box } from "@mui/material";
 import { Zen_Maru_Gothic } from "next/font/google";
 import Header from "@/components/ui/header";
 import DangerMeter from "@/components/ui/dangerMeter";
 import LilyBackground from "@/components/ui/lilyBackground";
 import Footer from "@/components/ui/footer";
 import WordList from "@/components/ui/list";
-
-
 
 const zen = Zen_Maru_Gothic({
   weight: ["400"],
@@ -74,6 +73,12 @@ export default function HomePage() {
         ここに音声認識の結果やテキストを表示
       </div>
 
+      <LilyBackground /> 
+      {/* <RecentRecordCard /> */}
+      <Header />
+      <Typography>はろー</Typography>
+      <div id="detection"></div>
+
       {/* メーターを囲む枠 */}
       <Box
         sx={{
@@ -111,6 +116,7 @@ export default function HomePage() {
         </Box>
         {/* メーター */}
         <DangerMeter level={1} />
+        <DangerMeter level={7} />
       </Box>
       {/* 確認ボタン */}
       <Box sx={{ width: "100%", maxWidth: 340, mx: "auto", mb: 2, textAlign: "center", zIndex: 1, position: "relative" }}>
@@ -126,12 +132,10 @@ export default function HomePage() {
             cursor: "pointer",
             boxShadow: "0 2px 8px rgba(40,167,69,0.15)",
           }}
-          onClick={addWord} // 単語追加
         >
           確認
         </button>
       </Box>
-
       
       {/* 単語リスト */}
       <WordList
@@ -139,6 +143,7 @@ export default function HomePage() {
       />
       <Footer />
     </Stack>
-
+      <Footer />
+    </Stack>
   );
 }
