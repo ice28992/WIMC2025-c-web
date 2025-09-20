@@ -21,6 +21,15 @@ const zen = Zen_Maru_Gothic({
 export default function HomePage() {
   const [words, setWords] = useState<{ word: string; count: number }[]>([]);
   
+    // 単語のカウントの合計を計算する関数
+  const calculateTotalCount = () => {
+    return words.reduce((total, currentWord) => total + currentWord.count, 0);
+  };
+
+  // 単語の合計カウントに基づいてlevelを設定
+  const totalCount = calculateTotalCount();
+  const level = totalCount;
+
   return (
     <Stack
       className={zen.className}
@@ -33,6 +42,7 @@ export default function HomePage() {
     >
       <LilyBackground />
       <Header />
+      {/* WebSocketデータ受信 */}
       <GetWebSocketData setWords={ setWords } />
 
       {/* メーターを囲む枠 */}
@@ -42,8 +52,7 @@ export default function HomePage() {
           maxWidth: 340,
           mx: "auto",
           mt: 2,
-          mb: 2,
-          marginBottom: 5,
+          mb: 5,
           bgcolor: "background.paper",
           border: "2px solid #28A745",
           borderRadius: 3,
@@ -72,7 +81,7 @@ export default function HomePage() {
           ワード検出状況
         </Box>
         {/* メーター */}
-        <DangerMeter level={3} />
+        <DangerMeter level={level} />
       </Box>
 
       {/* 単語リスト */}

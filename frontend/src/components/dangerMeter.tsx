@@ -12,8 +12,8 @@ export default function DangerMeter({ level }: DangerMeterProps) {
   const center = radius + strokeWidth / 2;
 
   // 角度設定（半円：-120°〜120°）
-  const startAngle = -120;
-  const endAngle = 120;
+  const startAngle = -100;
+  const endAngle = 100;
 
   // level(1〜10) を角度に変換
   const angle = startAngle + ((endAngle - startAngle) * (level / 10));
