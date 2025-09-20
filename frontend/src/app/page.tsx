@@ -1,12 +1,15 @@
 "use client";
 
 import { Stack, Typography, Box } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Zen_Maru_Gothic } from "next/font/google";
+
 import Header from "@/components/ui/header";
+import Footer from "@/components/ui/footer";
+
+import GetWebSocketData from "@/components/webSocket";
 import DangerMeter from "@/components/ui/dangerMeter";
 import LilyBackground from "@/components/ui/lilyBackground";
-import Footer from "@/components/ui/footer";
 import WordList from "@/components/ui/list";
 
 const zen = Zen_Maru_Gothic({
@@ -15,19 +18,12 @@ const zen = Zen_Maru_Gothic({
   display: "swap",
 });
 
-// ホーム
 export default function HomePage() {
   const [words, setWords] = useState<{ word: string; count: number }[]>([
     { word: "こんにちは", count: 3 },
     { word: "ありがとう", count: 1 },
   ]);
-
-  // サンプルで単語を追加する関数
-  const addWord = () => {
-    const newWord = `単語${words.length + 1}`;
-    setWords((prev) => [...prev, { word: newWord, count: Math.floor(Math.random() * 5) + 1 }]);
-  };
-
+  
   return (
     <Stack
       className={zen.className}
@@ -39,37 +35,8 @@ export default function HomePage() {
       }}
     >
       <LilyBackground />
-
-      {/* <RecentRecordCard /> */}
       <Header />
-      {/* 音声認識結果表示エリア */}
-      <div
-        id="detection"
-        style={{
-          maxWidth: 340,
-          margin: "16px auto",
-          padding: "12px",
-          backgroundColor: "#fff",
-          borderRadius: "8px",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-          position: "relative",
-        }}
-      >
-        <span
-          style={{
-            content: '""',
-            position: "absolute",
-            bottom: "-10px", // 下向きの三角
-            left: "20px",
-            width: 0,
-            height: 0,
-            borderLeft: "10px solid transparent",
-            borderRight: "10px solid transparent",
-            borderTop: "10px solid #fff",
-          }}
-        />
-        ここに音声認識の結果やテキストを表示
-      </div>
+      <GetWebSocketData />
 
       {/* メーターを囲む枠 */}
       <Box
@@ -79,6 +46,7 @@ export default function HomePage() {
           mx: "auto",
           mt: 2,
           mb: 2,
+          marginBottom: 5,
           bgcolor: "background.paper",
           border: "2px solid #28A745",
           borderRadius: 3,
@@ -108,36 +76,6 @@ export default function HomePage() {
         </Box>
         {/* メーター */}
         <DangerMeter level={3} />
-      </Box>
-
-      {/* 確認ボタン */}
-      <Box
-        sx={{
-          width: "100%",
-          maxWidth: 340,
-          mx: "auto",
-          mb: 2,
-          textAlign: "center",
-          zIndex: 1,
-          position: "relative",
-        }}
-      >
-        <button
-          style={{
-            background: "#28A745",
-            color: "#fff",
-            fontWeight: "bold",
-            fontSize: 16,
-            border: "none",
-            borderRadius: 8,
-            padding: "10px 32px",
-            cursor: "pointer",
-            boxShadow: "0 2px 8px rgba(40,167,69,0.15)",
-          }}
-          onClick={addWord}
-        >
-          確認
-        </button>
       </Box>
 
       {/* 単語リスト */}
