@@ -3,6 +3,7 @@
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 
+// Flower 型を定義
 type Flower = {
   x: number;
   y: number;
@@ -11,7 +12,7 @@ type Flower = {
   opacity: number;
 };
 
-// 百合シルエット
+// 百合シルエットコンポーネント
 function Lily({ x, y, size = 80, rotate = 0, opacity = 0.5 }: Flower) {
   const cx = size / 2;
   const cy = size / 2;
@@ -68,7 +69,7 @@ function Lily({ x, y, size = 80, rotate = 0, opacity = 0.5 }: Flower) {
   );
 }
 
-// 花同士がかぶらないようにランダム配置
+// 花同士がかぶらないようにランダム配置する関数
 function generateNonOverlappingFlowers(
   count: number,
   sizeMin: number,
@@ -82,7 +83,9 @@ function generateNonOverlappingFlowers(
   for (let i = 0; i < count; i++) {
     let tries = 0;
     let placed = false;
-    let size = 0, x = 0, y = 0; // ← 初期化しました
+    let size = 0, x = 0, y = 0; // 初期化
+
+    // 花の位置とサイズが重ならないように調整
     while (!placed && tries < triesLimit) {
       size = sizeMin + Math.random() * (sizeMax - sizeMin);
       x = Math.random() * (width - size);
@@ -96,6 +99,8 @@ function generateNonOverlappingFlowers(
       if (!overlap) placed = true;
       tries++;
     }
+
+    // 配置された花を追加
     if (placed) {
       flowers.push({
         x,
@@ -109,9 +114,11 @@ function generateNonOverlappingFlowers(
   return flowers;
 }
 
+// メインコンポーネント
 export default function LilyBackground() {
   const [flowers, setFlowers] = useState<Flower[]>([]);
 
+  // コンポーネントがマウントされたときに花をランダムに生成
   useEffect(() => {
     if (typeof window !== "undefined") {
       const width = window.innerWidth;
