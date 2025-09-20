@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 
-const GetWebSocketData = () => {
+interface Props {
+  setWords: React.Dispatch<React.SetStateAction<{ word: string; count: number }[]>>;
+}
+
+const GetWebSocketData = ({ setWords }: Props) => {
   const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
@@ -8,14 +12,25 @@ const GetWebSocketData = () => {
     const ws = new WebSocket("ws://192.168.3.39:1891");
     ws.onopen = () => { console.log("WebSocket接続完了");};
 
-    // 受信したデータをパース
+    // 受信データをパース
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       console.log("受信データ:", data);
 
-      // 受信したテキスト表示
+      // 受信テキスト表示
       if (data && data.text) {
         setMessage(data.text);
+        // 受信単語のカウント
+        setWords((listDatas) => {
+          // 既出の単語か判別
+          const existingItem = listDatas.find(item => item.word === data.text);
+          if (existingItem) {
+            return listDatas.map(item => item.word === data.text ? { ...item, count: item.count + 1 } : item);
+          } else {
+            // 新しい単語をリストに追加
+            return [...listDatas, { word: data.text, count: 1 }];
+          }
+        });
       }
     };
 
@@ -25,16 +40,14 @@ const GetWebSocketData = () => {
     };
 
     // WebSocket切断処理
-    ws.onclose = () => {
-      console.log("WebSocketが切断されました");
-    };
+    ws.onclose = () => { console.log("WebSocketが切断されました"); };
     return () => { ws.close(); };
-  }, []);
+  }, [setWords]);
 
   return (
     // messageが空の時は非表示
     message ? (
-      <div
+      <><div
         style={{
           maxWidth: 340,
           margin: "16px auto",
@@ -58,10 +71,10 @@ const GetWebSocketData = () => {
             borderLeft: "10px solid transparent",
             borderRight: "10px solid transparent",
             borderTop: "10px solid #28A745",
-          }}
-        />
+          }} />
         {"詐欺ワード『" + message + "』を検知しました！" || "受信待ち..."}
       </div>
+      </>
     ) : null
   );
 };
