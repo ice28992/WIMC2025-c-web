@@ -3,13 +3,21 @@
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 
-//百合シルエット
-function Lily({ x, y, size = 80, rotate = 0, opacity = 0.5 }) {
+type Flower = {
+  x: number;
+  y: number;
+  size: number;
+  rotate: number;
+  opacity: number;
+};
+
+// 百合シルエット
+function Lily({ x, y, size = 80, rotate = 0, opacity = 0.5 }: Flower) {
   const cx = size / 2;
   const cy = size / 2;
   const silhouetteColor = "#bdbdbd";
 
-  // 花びら
+  // 花びらのパスを作成
   const petalPath = (angle: number) => {
     const rad = (angle * Math.PI) / 180;
     const r1 = size * 0.13;
@@ -61,20 +69,25 @@ function Lily({ x, y, size = 80, rotate = 0, opacity = 0.5 }) {
 }
 
 // 花同士がかぶらないようにランダム配置
-function generateNonOverlappingFlowers(count, sizeMin, sizeMax, width, height) {
-  const flowers = [];
+function generateNonOverlappingFlowers(
+  count: number,
+  sizeMin: number,
+  sizeMax: number,
+  width: number,
+  height: number
+): Flower[] {
+  const flowers: Flower[] = [];
   const triesLimit = 1000;
 
   for (let i = 0; i < count; i++) {
     let tries = 0;
     let placed = false;
-    let size, x, y;
+    let size = 0, x = 0, y = 0; // ← 初期化しました
     while (!placed && tries < triesLimit) {
       size = sizeMin + Math.random() * (sizeMax - sizeMin);
       x = Math.random() * (width - size);
       y = Math.random() * (height - size);
-      // かぶり判定
-      const overlap = flowers.some(f => {
+      const overlap = flowers.some((f) => {
         const dx = f.x + f.size / 2 - (x + size / 2);
         const dy = f.y + f.size / 2 - (y + size / 2);
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -97,7 +110,7 @@ function generateNonOverlappingFlowers(count, sizeMin, sizeMax, width, height) {
 }
 
 export default function LilyBackground() {
-  const [flowers, setFlowers] = useState([]);
+  const [flowers, setFlowers] = useState<Flower[]>([]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -106,7 +119,13 @@ export default function LilyBackground() {
       const flowerCount = 18;
       const sizeMin = 64;
       const sizeMax = 120;
-      const flowerData = generateNonOverlappingFlowers(flowerCount, sizeMin, sizeMax, width, height);
+      const flowerData = generateNonOverlappingFlowers(
+        flowerCount,
+        sizeMin,
+        sizeMax,
+        width,
+        height
+      );
       setFlowers(flowerData);
     }
   }, []);
