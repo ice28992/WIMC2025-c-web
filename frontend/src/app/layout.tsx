@@ -8,8 +8,8 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "アプリ名",
-  description: "アプリ概要",
+  title: "詐欺バスター",
+  description: "詐欺対策アプリ",
 };
 
 export default function RootLayout({
