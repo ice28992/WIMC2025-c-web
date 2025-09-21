@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 // import { AuthProvider } from "@/components/contexts/auth";
 // import { Header } from "@/component/layout/header";
 // import { Footer } from "@/component/layout/footer";
+import Head from "next/head";  // next/head をインポート
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ja'>
-      {/* PWAの設定 */}
-      <head>
+      <Head>
+        {/* PWAの設定 */}
         <link rel='manifest' href='/manifest.json' />
-        <link rel='apple-touch-icon' href='/icon.png'></link>
+        <link rel='apple-touch-icon' href='/icon-192x192.png' /> {/* アイコンファイル名を一致させる */}
         <meta name='theme-color' content='#b8e986' />
-      </head>
+      </Head>
 
       <body className={inter.className}>
         <CssBaseline />
