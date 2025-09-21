@@ -11,7 +11,7 @@ const GetWebSocketData = ({ setWords }: Props) => {
 
   useEffect(() => {
     // WebSocket接続処理
-    const ws = new WebSocket("wss://192.168.91.62:1891");
+    const ws = new WebSocket("ws://192.168.91.62:1891");
     ws.onopen = () => { console.log("WebSocket接続完了");};
 
     // 受信データをパース
